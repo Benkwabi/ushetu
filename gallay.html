@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <title>Gallery - Ushetu Modern Pre & Primary School</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <style>
+        /* Preloader Styles */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #1a5276;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        
+        .preloader-logo {
+            width: 150px;
+            height: auto;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+        
+        .preloader-text {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .loading-bar {
+            width: 200px;
+            height: 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            width: 0%;
+            background: #f9d71c;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+        
+        .school-items {
+            display: flex;
+            margin-top: 30px;
+        }
+        
+        .school-item {
+            width: 50px;
+            height: 50px;
+            margin: 0 10px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            animation: float 3s infinite ease-in-out;
+        }
+        
+        .item1 {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23f9d71c"><path d="M12 3L1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>');
+            animation-delay: 0s;
+        }
+        
+        .item2 {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23f9d71c"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2M7.5 13A2.5 2.5 0 0 0 5 15.5 2.5 2.5 0 0 0 7.5 18a2.5 2.5 0 0 0 2.5-2.5A2.5 2.5 0 0 0 7.5 13m9 0a2.5 2.5 0 0 0-2.5 2.5 2.5 2.5 0 0 0 2.5 2.5 2.5 2.5 0 0 0 2.5-2.5 2.5 2.5 0 0 0-2.5-2.5z"/></svg>');
+            animation-delay: 0.5s;
+        }
+        
+        .item3 {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23f9d71c"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 12h2v5H7zm8-5h2v10h-2zm-4 7h2v3h-2zm0-4h2v2h-2z"/></svg>');
+            animation-delay: 1s;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        /* Hide preloader when loaded */
+        .loaded .preloader {
+            opacity: 0;
+            pointer-events: none;
+        }
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: #1a5276;
+            color: white;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .header-hidden {
+            transform: translateY(-100%);
+        }
+        
+        .header-visible {
+            transform: translateY(0);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            height: 70px;
+            width: auto;
+            margin-right: 15px;
+        }
+        
+        .school-name {
+            text-align: center;
+            flex-grow: 1;
+        }
+        
+        .school-name h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            color: #f8f9fa;
+        }
+        
+        .school-name p {
+            font-size: 0.9rem;
+            color: #d5dbdb;
+        }
+        
+        /* Navigation Styles */
+        nav {
+            width: 100%;
+            background-color: #2874a6;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .nav-menu li {
+            position: relative;
+        }
+        
+        .nav-menu li a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 15px 20px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .nav-menu li a:hover {
+            background-color: #1a5276;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 10px;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 101;
+            background-color: #1a5276;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        /* Gallery Section Styles */
+        .gallery-section {
+            padding: 40px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #1a5276;
+        }
+        
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            height: 250px;
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(26, 82, 118, 0.8);
+            color: white;
+            padding: 15px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover .gallery-caption {
+            transform: translateY(0);
+        }
+        
+        .gallery-caption h3 {
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+        
+        /* Category Filter */
+        .gallery-filter {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        
+        .filter-btn {
+            padding: 8px 20px;
+            margin: 5px;
+            background-color: #2874a6;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background-color: #1a5276;
+        }
+        
+        /* Footer Styles */
+        footer {
+            background-color: #1a5276;
+            color: white;
+            padding: 40px 0 20px;
+        }
+        
+        .footer-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .footer-section {
+            flex: 0 0 calc(33.333% - 20px);
+            margin-bottom: 20px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-section ul li a {
+            color: #d5dbdb;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-section ul li a:hover {
+            color: white;
+        }
+        
+        .contact-info p {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .contact-info i {
+            margin-right: 10px;
+        }
+        
+        .social-links {
+            display: flex;
+            margin-top: 15px;
+        }
+        
+        .social-links a {
+            display: inline-block;
+            color: white;
+            background-color: #2874a6;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            margin-right: 10px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background-color: #3498db;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            margin-top: 20px;
+            border-top: 1px solid #2874a6;
+            font-size: 0.9rem;
+            color: #d5dbdb;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .gallery-container {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .footer-section {
+                flex: 0 0 calc(50% - 15px);
+            }
+        }
+        
+        @media (min-width: 769px) {
+            .mobile-menu-btn {
+                display: none !important;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .logo-container {
+                justify-content: center;
+                margin-bottom: 15px;
+            }
+            
+            .mobile-menu-btn {
+                display: flex;
+            }
+            
+            .nav-menu {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                background-color: #2874a6;
+                z-index: 100;
+            }
+            
+            .nav-menu.active {
+                display: flex;
+            }
+            
+            .gallery-container {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .footer-section {
+                flex: 0 0 100%;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .school-name h1 {
+                font-size: 1.5rem;
+            }
+            
+            .gallery-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Fix for gallery section scrolling position */
+        #gallery {
+            scroll-margin-top: 120px;
+        }
+        
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+  
+
+    <!-- Header Section -->
+    <header id="mainHeader">
+        <div class="container header-container">
+            <div class="logo-container">
+                <img src="images/LOGO.PNG" alt="Ushetu Modern School Logo" class="logo">
+            </div>
+            <div class="school-name">
+                <h1>Ushetu Modern Pre & Primary School</h1>
+                <p>Strive for Excellence</p>
+            </div>
+            <div class="logo-container">
+                <img src="images/logoo.PNG" alt="Ushetu Modern School Logo" class="logo">
+            </div>
+        </div>
+        
+        <nav>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">Home</a></li>
+               
+        </nav>
+    </header>
+
+    <!-- Mobile Menu Button (Fixed position) -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery-section">
+        <div class="container">
+            <h2 class="section-title">Our School Gallery</h2>
+            <p style="text-align: center; max-width: 800px; margin: 0 auto 30px;">
+                Explore our vibrant school life through these images showcasing our facilities, activities, and the wonderful moments that make Ushetu Modern Pre & Primary School special.
+            </p>
+            
+            <div class="gallery-filter">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="facilities">Facilities</button>
+                <button class="filter-btn" data-filter="activities">Activities</button>
+                <button class="filter-btn" data-filter="classes">Classes</button>
+                <button class="filter-btn" data-filter="events">Events</button>
+            </div>
+            
+            <div class="gallery-container">
+                <!-- School Facilities -->
+                <div class="gallery-item" data-category="facilities">
+                    <img src="images/darasa.jpg" alt="Modern Classroom">
+                    <div class="gallery-caption">
+                        <h3>Modern Classrooms</h3>
+                        <p>Bright, spacious, and designed for effective learning</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="facilities">
+                    <img src="images/dining.jpg" alt="School Library">
+                    <div class="gallery-caption">
+                        <h3>School Library Café</h3>
+                        <p>A welcoming dining space offering nutritious, brain-boosting snacks to enhance focus and fuel learning.</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="facilities">
+                    <img src="images/compaund.jpg" alt="Playground">
+                    <div class="gallery-caption">
+                        <h3>School Environmen</h3>
+                        <p>Quiet Corners: Spaces for reflection, reading, or focused study.</p>
+                    </div>
+                </div>
+                
+                <!-- School Activities -->
+                <div class="gallery-item" data-category="activities">
+                    <img src="images/parade.jpg" alt="School Parade">
+                    <div class="gallery-caption">
+                        <h3>Morning Parade</h3>
+                        <p>Students gathering for morning assembly</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="activities">
+                    <img src="images/sports.jpg" alt="Sports Day">
+                    <div class="gallery-caption">
+                        <h3>Sports Activities</h3>
+                        <p>Students participating in various sports</p>
+                    </div>
+                </div>
+                
+              
+                
+                <!-- Classes in Progress -->
+                <div class="gallery-item" data-category="classes">
+                    <img src="images/session.jpg" alt="Class in Progress">
+                    <div class="gallery-caption">
+                        <h3>Class in Session</h3>
+                        <p>Interactive learning environment</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="classes">
+                    <img src="images/staffs.jpg" alt="Science Class">
+                    <div class="gallery-caption">
+                        <h3>Get to know our dedicated staff</h3>
+                        <p>They’ll inspire your child to learn!</p>
+                    </div>
+                </div>
+                
+                
+                
+                <!-- School Events -->
+                <div class="gallery-item" data-category="events">
+                    <img src="images/graduation.png" alt="Graduation Ceremony">
+                    <div class="gallery-caption">
+                        <h3>Graduation Day</h3>
+                        <p>Celebrating our students' achievements</p>
+                    </div>
+                </div>
+                
+             
+                
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <div class="contact-info">
+                        <p><i class="fas fa-map-marker-alt"></i> Ushetu Modern Pre & Primary School, P.O Box 348, Kahama</p>
+                        <p><i class="fas fa-phone"></i> +255 654 985 442 / +255 683 460 359 / +255 756 098 949</p>
+                        <p><i class="fas fa-envelope"></i> info@ushetumodernschool.sc.tz</p>
+                    </div>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>School Hours</h3>
+                    <p>Monday - Friday: 7:30 AM - 4:30 PM</p>
+                    <p>Saturday: 8:00 AM - 12:00 PM</p>
+                    <p>Sunday: Closed</p>
+                    <p>Office Hours: 8:00 AM - 5:00 PM (Mon-Fri)</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Ushetu Modern Pre & Primary School. All Rights Reserved. Developed by Benkwabi</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle with auto-close
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navMenu = document.getElementById('navMenu');
+        const navLinks = document.querySelectorAll('.nav-menu li a');
+        const header = document.getElementById('mainHeader');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            mobileMenuBtn.innerHTML = navMenu.classList.contains('active') ? 
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+        
+        // Close mobile menu when any link is clicked
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    navMenu.classList.remove('active');
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                }
+            });
+        });
+
+        // Header scroll behavior
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            if (window.innerWidth <= 768) {
+                const currentScroll = window.pageYOffset;
+                if (currentScroll <= 0) {
+                    header.classList.remove('header-hidden');
+                    header.classList.add('header-visible');
+                    return;
+                }
+                
+                if (currentScroll > lastScroll && !header.classList.contains('header-hidden')) {
+                    // Down scroll
+                    header.classList.remove('header-visible');
+                    header.classList.add('header-hidden');
+                } else if (currentScroll < lastScroll && header.classList.contains('header-hidden')) {
+                    // Up scroll
+                    header.classList.remove('header-hidden');
+                    header.classList.add('header-visible');
+                }
+                lastScroll = currentScroll;
+            }
+        });
+
+        // Gallery Filter Functionality
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterBtns.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                btn.classList.add('active');
+                
+                const filter = btn.dataset.filter;
+                
+                galleryItems.forEach(item => {
+                    if (filter === 'all' || item.dataset.category === filter) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+        
+        // Preloader Animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const preloader = document.getElementById('preloader');
+            const progress = document.getElementById('progress');
+            let width = 0;
+            
+            // Simulate loading progress
+            const interval = setInterval(function() {
+                width += Math.random() * 10;
+                progress.style.width = width + '%';
+                
+                if (width >= 100) {
+                    clearInterval(interval);
+                    setTimeout(function() {
+                        document.body.classList.add('loaded');
+                    }, 500);
+                }
+            }, 200);
+            
+            // Force complete after 3 seconds max
+            setTimeout(function() {
+                clearInterval(interval);
+                progress.style.width = '100%';
+                document.body.classList.add('loaded');
+            }, 3000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Ushetu Modern Pre & Primary School</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Reuse the same styles from your main CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header Styles */
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo-container {
+            width: 80px;
+        }
+        
+        .logo {
+            width: 100%;
+            height: auto;
+        }
+        
+        .school-name {
+            text-align: center;
+        }
+        
+        .school-name h1 {
+            color: #1a5276;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        
+        .school-name p {
+            color: #f9d71c;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        nav {
+            background-color: #1a5276;
+            padding: 10px 0;
+        }
+        
+        .nav-menu {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+        }
+        
+        .nav-menu li {
+            margin: 0 15px;
+        }
+        
+        .nav-menu li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-menu li a:hover, .nav-menu li a.active {
+            background-color: #f9d71c;
+            color: #1a5276;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: #1a5276;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 1.2rem;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            border-radius: 5px;
+        }
+        
+        /* Preloader Styles */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #1a5276;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        
+        .preloader-logo {
+            width: 150px;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+        
+        .preloader-text {
+            color: #f9d71c;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+        
+        .loading-bar {
+            width: 200px;
+            height: 5px;
+            background-color: rgba(255,255,255,0.3);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        
+        .progress {
+            height: 100%;
+            width: 0;
+            background-color: #f9d71c;
+            transition: width 0.3s ease;
+        }
+        
+        .school-items {
+            display: flex;
+            margin-top: 30px;
+        }
+        
+        .school-item {
+            width: 30px;
+            height: 30px;
+            background-color: #f9d71c;
+            margin: 0 10px;
+            border-radius: 50%;
+            animation: bounce 1.5s infinite ease-in-out;
+        }
+        
+        .item1 {
+            animation-delay: 0.1s;
+        }
+        
+        .item2 {
+            animation-delay: 0.2s;
+        }
+        
+        .item3 {
+            animation-delay: 0.3s;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        body.loaded .preloader {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        /* Header scroll behavior */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+        
+        .header-hidden {
+            transform: translateY(-100%);
+        }
+        
+        .header-visible {
+            transform: translateY(0);
+        }
+        
+        /* About Us Specific Styles */
+        .about-hero {
+            background: linear-gradient(rgba(26, 82, 118, 0.8), rgba(26, 82, 118, 0.8)), url('images/msosi.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            margin-top: 80px;
+        }
+        
+        .about-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .breadcrumb {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            margin-top: 20px;
+        }
+        
+        .breadcrumb li {
+            margin: 0 5px;
+        }
+        
+        .breadcrumb li a {
+            color: #f9d71c;
+            text-decoration: none;
+        }
+        
+        .breadcrumb li::after {
+            content: '/';
+            margin-left: 10px;
+            color: white;
+        }
+        
+        .breadcrumb li:last-child::after {
+            content: '';
+        }
+        
+        .about-section {
+            padding: 60px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #1a5276;
+            font-size: 2rem;
+        }
+        
+        .about-content {
+            background: white;
+            padding: 30px;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .about-content h2 {
+            color: #1a5276;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        .about-content h3 {
+            color: #1a5276;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .about-content h4 {
+            color: #1a5276;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .about-content p {
+            margin-bottom: 15px;
+        }
+        
+        .about-content ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .director-message {
+            background-color: #eaf2f8;
+            padding: 30px;
+            border-radius: 5px;
+            margin: 30px 0;
+            border-left: 5px solid #1a5276;
+        }
+        
+        .director-message h3 {
+            color: #1a5276;
+            margin-bottom: 15px;
+        }
+        
+        .director-signature {
+            text-align: right;
+            font-style: italic;
+            margin-top: 20px;
+        }
+        
+        .mv-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+        
+        .mv-box {
+            flex: 0 0 calc(50% - 15px);
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-top: 3px solid #1a5276;
+        }
+        
+        .mv-box h3 {
+            color: #1a5276;
+            margin-bottom: 15px;
+        }
+        
+        /* Footer Styles */
+        footer {
+            background-color: #1a5276;
+            color: white;
+            padding: 50px 0 20px;
+        }
+        
+        .footer-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .footer-section {
+            flex: 0 0 calc(33.333% - 30px);
+            margin-bottom: 30px;
+        }
+        
+        .footer-section h3 {
+            color: #f9d71c;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-section ul li a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-section ul li a:hover {
+            color: #f9d71c;
+        }
+        
+        .contact-info p {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .contact-info i {
+            margin-right: 10px;
+            color: #f9d71c;
+            margin-top: 3px;
+        }
+        
+        .social-links {
+            display: flex;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            background-color: rgba(255,255,255,0.1);
+            color: white;
+            border-radius: 50%;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background-color: #f9d71c;
+            color: #1a5276;
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .footer-section {
+                flex: 0 0 calc(50% - 20px);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .logo-container {
+                margin-bottom: 15px;
+            }
+            
+            .school-name h1 {
+                font-size: 1.3rem;
+            }
+            
+            .nav-menu {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background-color: #1a5276;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                z-index: 999;
+            }
+            
+            .nav-menu.active {
+                display: flex;
+            }
+            
+            .nav-menu li {
+                margin: 15px 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .mv-box {
+                flex: 0 0 100%;
+            }
+            
+            .about-hero {
+                padding: 60px 0;
+                margin-top: 60px;
+            }
+            
+            .about-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .footer-section {
+                flex: 0 0 100%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .about-hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .about-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Preloader -->
+    
+
+    <!-- Header -->
+    <header id="mainHeader">
+        <div class="container header-container">
+            <div class="logo-container">
+                <img src="images/LOGO.PNG" alt="Ushetu Modern School Logo" class="logo">
+            </div>
+            <div class="school-name">
+                <h1>Ushetu Modern Pre & Primary School</h1>
+                <p>Strive for Excellence</p>
+            </div>
+            <div class="logo-container">
+                <img src="images/logoo.PNG" alt="Ushetu Modern School Logo" class="logo">
+            </div>
+        </div>
+        
+        <nav>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html" class="active">About us</a></li>
+
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- About Us Hero Section -->
+    <section class="about-hero">
+        <div class="container">
+            <h1>About Our School</h1>
+            <ul class="breadcrumb">
+                <li><a href="index.html">Home</a></li>
+                <li>About Us</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Main About Content -->
+    <section class="about-section">
+        <div class="container">
+            <div class="about-content">
+                <h2>Welcome to Ushetu Modern Pre & Primary School</h2>
+                <p>Ushetu Modern Pre & Primary School is located at Nyamilangano ward - which is Ushetu District Council Head Quarter, Kahama District in Shinyanga region. We are a modern English Medium pre, primary day and boarding school.</p>
+                <p>The school is well equipped with all necessary infrastructures for providing quality education to our pupils at all levels. The school is fully registered by the Ministry of Education, Science and Technology with registration number <strong>EM: 18895</strong> for Pre & Primary School and registration number <strong>2968</strong> for Day Care Centre.</p>
+                <p>We provide child education following the Tanzania syllabus at a relative low cost, with much emphasis on positive character building while providing utmost care to every child enrolled at our school.</p>
+            </div>
+            
+            <div class="about-content">
+                <h3>Our School Facilities</h3>
+                <p>Ushetu Modern School comprises of three entities: Day-care Unit, Nursery and Primary school. Our facilities include:</p>
+                <ul>
+                    <li>Adequate and spacious compounds</li>
+                    <li>Well-equipped classrooms for effective learning</li>
+                    <li>Conducive and well-protected hostels</li>
+                    <li>Modern sanitation facilities (toilets)</li>
+                    <li>Kitchens, stores, and dining room</li>
+                    <li>A variety of playing grounds</li>
+                </ul>
+                
+                <h4>Boarding Facilities</h4>
+                <p>Our boarding section has all necessary facilities with full-time electricity and water supply. We provide standard beds to suit the age needs of pupils with supportive care from trained and committed matrons.</p>
+                
+                <h4>Transport Services</h4>
+                <p>Our day scholars have options of either using our school buses transport or using their private transport. For those opting to use the school buses, we provide safe and comfortable transport service. The cost of transport services depends on distance from the school.</p>
+            </div>
+            
+            <div class="about-content">
+                <h3>Our Passionate Staff</h3>
+                <p>Ushetu Modern School has a well-structured administration, competent, committed and well-experienced teaching professionals, and well-trained supporting staff. We ensure children have a better learning environment and place vital importance on the physical and emotional well-being of our pupils.</p>
+                <p>We provide the best possible curriculum as guided by the Ministry of Education, Science and Technology with excellent teaching and learning as key priorities. The school fosters a sense of family among pupils and staff.</p>
+            </div>
+            
+            <div class="about-content">
+                <h3>Food and Nutrition</h3>
+                <p>As a Day and Boarding Pre & Primary school, we provide:</p>
+                <ul>
+                    <li>Breakfast at 7:00 am for boarders</li>
+                    <li>Morning tea at 10:00 am for all pupils</li>
+                    <li>A well-balanced delicious meal at 12:30 noon for the whole school</li>
+                    <li>Supper for boarders in the evening</li>
+                    <li>Safe cool drinking water throughout the day</li>
+                </ul>
+                <p><strong>Note:</strong> The school does not allow outside food/bites/drinks to be brought in.</p>
+            </div>
+            
+            <div class="director-message">
+                <h3>Director's Message</h3>
+                <p>Welcome to Ushetu Modern School, a happy and successful community where every pupil is recognized as having potential and where we aim for all to reach their dreams. We strongly believe that every child has a talent and can experience success as they develop through the supportive and caring environment we provide.</p>
+                <p>At our School, we respect the traditional values of hard work, good manners, and self-discipline, whilst also preparing our pupils for their future lives in an ever-changing world. We benefit from a dedicated and well-qualified staff who bring 21st century learning alive for everyone.</p>
+                <p>The best way to fully experience and appreciate what our School has to offer is to visit during a normal school day. I therefore invite you to contact us to arrange a visit or to answer any further questions you may have regarding our school.</p>
+                <p>I look forward to working with you and your child now and over the coming years.</p>
+                <div class="director-signature">
+                    <p><strong>The Director</strong><br>Ushetu Modern Pre & Primary School</p>
+                </div>
+            </div>
+            
+            <h2 class="section-title">Our Core Principles</h2>
+            <div class="mv-container">
+                <div class="mv-box">
+                    <h3>Our Mission</h3>
+                    <p>Ushetu Modern Pre & Primary School provides a positive, vibrant and inspiring environment where pupils are valued and encouraged to succeed in becoming lifelong learners.</p>
+                </div>
+                <div class="mv-box">
+                    <h3>Our Vision</h3>
+                    <p>Ushetu Modern Pre & Primary School encourages the development of the whole pupil. Our aim is to support learners in becoming curious, reflective and critical in their thinking as patriotic Tanzanians and global citizens.</p>
+                </div>
+                <div class="mv-box">
+                    <h3>Our Core Values</h3>
+                    <p>Confidence, Independence, Persistence and Respect.</p>
+                </div>
+                <div class="mv-box">
+                    <h3>Our Motto</h3>
+                    <p>Strive for Excellence</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About us</a></li>
+                    
+                        <li><a href="gallay.html">Galley</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <div class="contact-info">
+                        <p><i class="fas fa-map-marker-alt"></i> Ushetu Modern Pre & Primary School, P.O Box 348, Kahama</p>
+                        <p><i class="fas fa-phone"></i> +255 654 985 442 / +255 683 460 359 / +255 756 098 949</p>
+                        <p><i class="fas fa-envelope"></i> info@ushetumodernschool.sc.tz</p>
+                    </div>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>School Hours</h3>
+                    <p>Monday - Friday: 7:30 AM - 4:30 PM</p>
+                    <p>Saturday: 8:00 AM - 12:00 PM</p>
+                    <p>Sunday: Closed</p>
+                    <p>Office Hours: 8:00 AM - 5:00 PM (Mon-Fri)</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Ushetu Modern Pre & Primary School. All Rights Reserved. Developed by Benkwabi</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile Menu Toggle with auto-close
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navMenu = document.getElementById('navMenu');
+        const navLinks = document.querySelectorAll('.nav-menu li a');
+        const header = document.getElementById('mainHeader');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            mobileMenuBtn.innerHTML = navMenu.classList.contains('active') ? 
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+        
+        // Close mobile menu when any link is clicked
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    navMenu.classList.remove('active');
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                }
+            });
+        });
+
+        // Header scroll behavior
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            if (window.innerWidth <= 768) {
+                const currentScroll = window.pageYOffset;
+                if (currentScroll <= 0) {
+                    header.classList.remove('header-hidden');
+                    header.classList.add('header-visible');
+                    return;
+                }
+                
+                if (currentScroll > lastScroll && !header.classList.contains('header-hidden')) {
+                    // Down scroll
+                    header.classList.remove('header-visible');
+                    header.classList.add('header-hidden');
+                } else if (currentScroll < lastScroll && header.classList.contains('header-hidden')) {
+                    // Up scroll
+                    header.classList.remove('header-hidden');
+                    header.classList.add('header-visible');
+                }
+                lastScroll = currentScroll;
+            }
+        });
+
+        // Preloader Animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const preloader = document.getElementById('preloader');
+            const progress = document.getElementById('progress');
+            let width = 0;
+            
+            // Simulate loading progress
+            const interval = setInterval(function() {
+                width += Math.random() * 10;
+                progress.style.width = width + '%';
+                
+                if (width >= 100) {
+                    clearInterval(interval);
+                    setTimeout(function() {
+                        document.body.classList.add('loaded');
+                    }, 500);
+                }
+            }, 200);
+            
+            // Force complete after 3 seconds max
+            setTimeout(function() {
+                clearInterval(interval);
+                progress.style.width = '100%';
+                document.body.classList.add('loaded');
+            }, 3000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <title>Ushetu Modern Pre & Primary School</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <style>
+        /* Preloader Styles */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #1a5276;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        
+        .preloader-logo {
+            width: 150px;
+            height: auto;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+        
+        .preloader-text {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .loading-bar {
+            width: 200px;
+            height: 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            width: 0%;
+            background: #f9d71c;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+        
+        .school-items {
+            display: flex;
+            margin-top: 30px;
+        }
+        
+        .school-item {
+            width: 50px;
+            height: 50px;
+            margin: 0 10px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            animation: float 3s infinite ease-in-out;
+        }
+        
+        .item1 {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23f9d71c"><path d="M12 3L1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>');
+            animation-delay: 0s;
+        }
+        
+        .item2 {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23f9d71c"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2M7.5 13A2.5 2.5 0 0 0 5 15.5 2.5 2.5 0 0 0 7.5 18a2.5 2.5 0 0 0 2.5-2.5A2.5 2.5 0 0 0 7.5 13m9 0a2.5 2.5 0 0 0-2.5 2.5 2.5 2.5 0 0 0 2.5 2.5 2.5 2.5 0 0 0 2.5-2.5 2.5 2.5 0 0 0-2.5-2.5z"/></svg>');
+            animation-delay: 0.5s;
+        }
+        
+        .item3 {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23f9d71c"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 12h2v5H7zm8-5h2v10h-2zm-4 7h2v3h-2zm0-4h2v2h-2z"/></svg>');
+            animation-delay: 1s;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        /* Hide preloader when loaded */
+        .loaded .preloader {
+            opacity: 0;
+            pointer-events: none;
+        }
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: #1a5276;
+            color: white;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .header-hidden {
+            transform: translateY(-100%);
+        }
+        
+        .header-visible {
+            transform: translateY(0);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            height: 70px;
+            width: auto;
+            margin-right: 15px;
+        }
+        
+        .school-name {
+            text-align: center;
+            flex-grow: 1;
+        }
+        
+        .school-name h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            color: #f8f9fa;
+        }
+        
+        .school-name p {
+            font-size: 0.9rem;
+            color: #d5dbdb;
+        }
+        
+        /* Navigation Styles */
+        nav {
+            width: 100%;
+            background-color: #2874a6;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .nav-menu li {
+            position: relative;
+        }
+        
+        .nav-menu li a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 15px 20px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .nav-menu li a:hover {
+            background-color: #1a5276;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 10px;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 101;
+            background-color: #1a5276;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        /* Hero Slider Styles */
+        .hero-slider {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            overflow: hidden;
+        }
+        
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .slide.active {
+            opacity: 1;
+        }
+        
+        .slide-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 20px;
+        }
+        
+        .slide-content h2 {
+            margin-bottom: 10px;
+            font-size: 2rem;
+        }
+        
+        /* Main Content Styles */
+        .main-content {
+            padding: 40px 0;
+        }
+        
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .welcome-section h2 {
+            color: #1a5276;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+        
+        .welcome-section p {
+            max-width: 800px;
+            margin: 0 auto 20px;
+        }
+        
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin: 30px 0;
+        }
+        
+        .feature-box {
+            flex: 0 0 calc(33.333% - 20px);
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-box:hover {
+            transform: translateY(-10px);
+        }
+        
+        .feature-box i {
+            font-size: 2.5rem;
+            color: #1a5276;
+            margin-bottom: 15px;
+        }
+        
+        .feature-box h3 {
+            color: #1a5276;
+            margin-bottom: 15px;
+        }
+        
+        /* News & Events */
+        .news-section {
+            background-color: #eaf2f8;
+            padding: 40px 0;
+            margin: 40px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #1a5276;
+        }
+        
+        .news-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .news-item {
+            flex: 0 0 calc(50% - 15px);
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .news-item h3 {
+            color: #1a5276;
+            margin-bottom: 10px;
+        }
+        
+        .news-item .date {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        
+        /* Map Section */
+        .map-section {
+            padding: 40px 0;
+            background-color: #eaf2f8;
+        }
+        
+        .map-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .map-info {
+            flex: 0 0 40%;
+            padding: 20px;
+        }
+        
+        .map-embed {
+            flex: 0 0 58%;
+            height: 400px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .map-embed iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* Footer Styles */
+        footer {
+            background-color: #1a5276;
+            color: white;
+            padding: 40px 0 20px;
+        }
+        
+        .footer-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .footer-section {
+            flex: 0 0 calc(33.333% - 20px);
+            margin-bottom: 20px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-section ul li a {
+            color: #d5dbdb;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-section ul li a:hover {
+            color: white;
+        }
+        
+        .contact-info p {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .contact-info i {
+            margin-right: 10px;
+        }
+        
+        .social-links {
+            display: flex;
+            margin-top: 15px;
+        }
+        
+        .social-links a {
+            display: inline-block;
+            color: white;
+            background-color: #2874a6;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            margin-right: 10px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background-color: #3498db;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            margin-top: 20px;
+            border-top: 1px solid #2874a6;
+            font-size: 0.9rem;
+            color: #d5dbdb;
+        }
+        
+        /* Mission/Vision Section */
+        .mission-vision {
+            background-color: #1a5276;
+            color: white;
+            padding: 40px 0;
+            margin: 40px 0;
+        }
+        
+        .mv-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .mv-box {
+            flex: 0 0 calc(50% - 15px);
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        
+        .mv-box h3 {
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            color: #f8f9fa;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .feature-box {
+                flex: 0 0 calc(50% - 15px);
+            }
+            
+            .footer-section {
+                flex: 0 0 calc(50% - 15px);
+            }
+            
+            .mv-box {
+                flex: 0 0 100%;
+            }
+            
+            .map-info,
+            .map-embed {
+                flex: 0 0 100%;
+            }
+            
+            .map-embed {
+                margin-top: 20px;
+            }
+        }
+        
+        @media (min-width: 769px) {
+            .mobile-menu-btn {
+                display: none !important;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .logo-container {
+                justify-content: center;
+                margin-bottom: 15px;
+            }
+            
+            .mobile-menu-btn {
+                display: flex;
+            }
+            
+            .nav-menu {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                background-color: #2874a6;
+                z-index: 100;
+            }
+            
+            .nav-menu.active {
+                display: flex;
+            }
+            
+            .hero-slider {
+                height: 400px;
+            }
+            
+            .feature-box {
+                flex: 0 0 100%;
+            }
+            
+            .news-item {
+                flex: 0 0 100%;
+            }
+            
+            .footer-section {
+                flex: 0 0 100%;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero-slider {
+                height: 300px;
+            }
+            
+            .slide-content h2 {
+                font-size: 1.5rem;
+            }
+            
+            .school-name h1 {
+                font-size: 1.5rem;
+            }
+            
+            .map-embed {
+                height: 300px;
+            }
+        }
+        
+        /* Fix for news section scrolling position */
+        #news {
+            scroll-margin-top: 120px;
+        }
+        
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+        <img src="images/LOGO.PNG" alt="School Logo" class="preloader-logo">
+        <div class="preloader-text">Strive for Excellence!</div>
+        <div class="loading-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+        <div class="school-items">
+            <div class="school-item item1"></div>
+            <div class="school-item item2"></div>
+            <div class="school-item item3"></div>
+        </div>
+    </div>
+
+    <!-- Header Section -->
+    <header id="mainHeader">
+        <div class="container header-container">
+            <div class="logo-container">
+                <img src="images/LOGO.PNG" alt="Ushetu Modern School Logo" class="logo">
+            </div>
+            <div class="school-name">
+                <h1>Ushetu Modern Pre & Primary School</h1>
+                <p>Strive for Excellence</p>
+            </div>
+            <div class="logo-container">
+                <img src="images/logoo.PNG" alt="Ushetu Modern School Logo" class="logo">
+            </div>
+        </div>
+        
+        <nav>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#" class="active">Home</a></li>
+                <li><a href="about.html">About us</a></li>
+                <li><a href="#news">News</a></li>
+                <li><a href="gallay.html">Galley</a></li>
+                <li><a href="contact.html">Contact us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Mobile Menu Button (Fixed position) -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Rest of your HTML content remains the same -->
+    <!-- Hero Slider -->
+    <div class="hero-slider">
+        <div class="slide active" style="background-image: url('images/parade.jpg');">
+            <div class="slide-content">
+                <h2>Quality Education for Your Child</h2>
+                <p>Providing modern education with traditional values</p>
+            </div>
+        </div>
+        <div class="slide" style="background-image: url('images/ndege.jpg');">
+            <div class="slide-content">
+                <h2>Well Equipped Facilities</h2>
+                <p>Conducive learning environment for all pupils</p>
+            </div>
+        </div>
+        <div class="slide" style="background-image: url('images/msosi.jpg');">
+            <div class="slide-content">
+               <h2>Modern, Inspiring Classrooms</h2>
+                <p>Bright, spacious, and designed for effective learning</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container">
+            <section class="welcome-section">
+                <h2>Welcome to Ushetu Modern Pre & Primary School</h2>
+                <p>Ushetu Modern School is a modern English Medium pre, primary day and boarding school located at Nyamilangano ward - which is Ushetu District Council Head Quarter, Kahama District in Shinyanga region.</p>
+                <p>The school is well equipped with all necessary infrastructures for providing education to our pupils of all present levels. The school is fully registered by the Ministry of Education, Science and Technology.</p>
+            </section>
+
+            <div class="features">
+                <div class="feature-box">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h3>Quality Education</h3>
+                    <p>We provide child education relating to Tanzania syllabus at a relative low cost, with much insistence on positive character building.</p>
+                </div>
+                <div class="feature-box">
+                    <i class="fas fa-home"></i>
+                    <h3>Boarding Facilities</h3>
+                    <p>Our boarding section has all necessary facilities with full-time electricity and water supply, and standard beds to suit the age needs of pupils.</p>
+                </div>
+                <div class="feature-box">
+                    <i class="fas fa-bus"></i>
+                    <h3>Transport Services</h3>
+                    <p>Our day scholars have options of either using our school buses transport or using their private transport.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mission/Vision Section -->
+    <section class="mission-vision">
+        <div class="container">
+            <h2 class="section-title">Our Core Principles</h2>
+            <div class="mv-container">
+                <div class="mv-box">
+                    <h3>Our Mission</h3>
+                    <p>Ushetu Modern Pre & Primary School provides a positive, vibrant and inspiring environment where pupils are valued and encouraged to succeed in becoming lifelong learners.</p>
+                </div>
+                <div class="mv-box">
+                    <h3>Our Vision</h3>
+                    <p>Ushetu Modern Pre & Primary School encourages the development of the whole pupils. Our aim is to support learners in becoming curious, reflective and critical in their thinking as patriotic Tanzania and global citizens.</p>
+                </div>
+                <div class="mv-box">
+                    <h3>Our Core Values</h3>
+                    <p>Confidence, Independence, Persistence and Respect.</p>
+                </div>
+                <div class="mv-box">
+                    <h3>Our Motto</h3>
+                    <p>Strive for Excellence</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- News & Events Section -->
+    <section id="news">
+        <div class="container">
+            <h2 class="section-title">News & Upcoming Events</h2>
+            <div class="news-container">
+                <div class="news-item">
+                    <h3>Admission Interviews</h3>
+                    <div class="date">June 25, 2025</div>
+                    <p>We will have interviews for new admissions on 25th June, 2024. The office will remain open from 15th June, 2024 to 30th June, 2024.</p>
+                </div>
+                <div class="news-item">
+                    <h3>Term Two Opening</h3>
+                    <div class="date">July 10, 2025</div>
+                    <p>School officially opens for term two on 10th July, 2024. But, then the office will be open for enquires and administrative services.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section class="map-section">
+        <div class="container">
+            <h2 class="section-title">Find Our Location</h2>
+            <div class="map-container">
+                <div class="map-info">
+                    <h3>Visit Us</h3>
+                    <p>Ushetu Modern Pre & Primary School is conveniently located at Nyamilangano ward, which is the Ushetu District Council Head Quarter in Kahama District, Shinyanga region.</p>
+                    <p><i class="fas fa-map-marker-alt"></i> <strong>Address:</strong> P.O Box 348, Kahama, Tanzania</p>
+                    <p><i class="fas fa-clock"></i> <strong>Office Hours:</strong> Monday-Friday: 8:00 AM - 5:00 PM</p>
+                    <p><i class="fas fa-phone"></i> <strong>Phone:</strong> +255 654 985 442 / +255 683 460 359</p>
+                    <p><i class="fas fa-envelope"></i> <strong>Email:</strong> info@ushetumodernschool.sc.tz</p>
+                </div>
+                <div class="map-embed">
+                   <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3979.3018242523626!2d32.26035707352657!3d-4.160945645522419!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19c9a57c49223bd7%3A0x2c634df77220f6a7!2sUshetu%20Modern%20Pre%20%26Primary%20School!5e0!3m2!1sen!2stz!4v1752073793483!5m2!1sen!2stz" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="about.html">About us</a></li>
+                        <li><a href="#">News</a></li>
+                        <li><a href="gallay.html">Galley</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <div class="contact-info">
+                        <p><i class="fas fa-map-marker-alt"></i> Ushetu Modern Pre & Primary School, P.O Box 348, Kahama</p>
+                        <p><i class="fas fa-phone"></i> +255 654 985 442 / +255 683 460 359 / +255 756 098 949</p>
+                        <p><i class="fas fa-envelope"></i> info@ushetumodernschool.sc.tz</p>
+                    </div>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>School Hours</h3>
+                    <p>Monday - Friday: 7:30 AM - 4:30 PM</p>
+                    <p>Saturday: 8:00 AM - 12:00 PM</p>
+                    <p>Sunday: Closed</p>
+                    <p>Office Hours: 8:00 AM - 5:00 PM (Mon-Fri)</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Ushetu Modern Pre & Primary School. All Rights Reserved. Developed by Benkwabi</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle with auto-close
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navMenu = document.getElementById('navMenu');
+        const navLinks = document.querySelectorAll('.nav-menu li a');
+        const header = document.getElementById('mainHeader');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            mobileMenuBtn.innerHTML = navMenu.classList.contains('active') ? 
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+        
+        // Close mobile menu when any link is clicked
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    navMenu.classList.remove('active');
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                }
+            });
+        });
+
+        // Header scroll behavior
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            if (window.innerWidth <= 768) {
+                const currentScroll = window.pageYOffset;
+                if (currentScroll <= 0) {
+                    header.classList.remove('header-hidden');
+                    header.classList.add('header-visible');
+                    return;
+                }
+                
+                if (currentScroll > lastScroll && !header.classList.contains('header-hidden')) {
+                    // Down scroll
+                    header.classList.remove('header-visible');
+                    header.classList.add('header-hidden');
+                } else if (currentScroll < lastScroll && header.classList.contains('header-hidden')) {
+                    // Up scroll
+                    header.classList.remove('header-hidden');
+                    header.classList.add('header-visible');
+                }
+                lastScroll = currentScroll;
+            }
+        });
+
+        // Image Slider
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            currentSlide = (n + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+        
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+        
+        // Change slide every 3 seconds
+        setInterval(nextSlide, 3000);
+        
+        // Initialize the slider
+        showSlide(0);
+        
+        // Preloader Animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const preloader = document.getElementById('preloader');
+            const progress = document.getElementById('progress');
+            let width = 0;
+            
+            // Simulate loading progress
+            const interval = setInterval(function() {
+                width += Math.random() * 10;
+                progress.style.width = width + '%';
+                
+                if (width >= 100) {
+                    clearInterval(interval);
+                    setTimeout(function() {
+                        document.body.classList.add('loaded');
+                    }, 500);
+                }
+            }, 200);
+            
+            // Force complete after 3 seconds max
+            setTimeout(function() {
+                clearInterval(interval);
+                progress.style.width = '100%';
+                document.body.classList.add('loaded');
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
